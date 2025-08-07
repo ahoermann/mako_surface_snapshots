@@ -1,0 +1,3 @@
+https://github.com/alliedvision/VmbPy/releases/download/1.1.1/vmbpy-1.1.1-py3-none-manylinux_2_27_x86_64.whl
+numpy
+opencv-python
