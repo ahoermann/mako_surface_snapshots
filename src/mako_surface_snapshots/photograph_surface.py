@@ -69,7 +69,7 @@ def parse(args=None):
     )
 
     parser.add_argument(
-        "-l",
+        "-lo",
         "--motor_lower_limit",
         type=float,
         default=-30,
@@ -77,7 +77,7 @@ def parse(args=None):
     )
 
     parser.add_argument(
-        "-h",
+        "-hi",
         "--motor_higher_limit",
         type=float,
         default=0,
