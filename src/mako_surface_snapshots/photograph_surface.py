@@ -81,10 +81,12 @@ def parse(args=None):
         default=0,
         help="Maximum value of the motor pv to probe.",
     )
+    args = parser.parse_args(args)
+    return args
 
 
 if __name__ == "__main__":
-    args, func = parse()
+    args = parse()
     photographer = SurfacePhotographer(
         mako_prefix=args.camera_ioc_prefix,
         motor_address=args.motor_pv,
