@@ -23,6 +23,7 @@ class SurfacePhotographer:
     def optimize(self):
         self.bounds_transformer = SequentialDomainReductionTransformer()
         self.pbounds = {self.motor_address: (self.motor_min, self.motor_max)}
+        acquisition_function = ExpectedImprovement(xi=1e-4)
         self.optimizer = BayesianOptimization(
             f=self.black_box_function,
             pbounds=self.pbounds,
@@ -30,7 +31,6 @@ class SurfacePhotographer:
             bounds_transformer=self.bounds_transformer,
             acquisition_function=acquisition_function,
         )
-        acquisition_function = ExpectedImprovement(xi=1e-4)
 
         self.optimizer.maximize(
             init_points=10,
