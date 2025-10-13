@@ -28,11 +28,12 @@ class SurfacePhotographer:
             pbounds=self.pbounds,
             random_state=1,
             bounds_transformer=self.bounds_transformer,
+            acquisition_function=acquisition_function,
         )
         acquisition_function = ExpectedImprovement(xi=1e-4)
 
         self.optimizer.maximize(
-            init_points=10, n_iter=10, acquisition_function=acquisition_function
+            init_points=10, n_iter=10,
         )
 
     def photo(self):
