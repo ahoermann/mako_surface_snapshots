@@ -33,7 +33,8 @@ class SurfacePhotographer:
         acquisition_function = ExpectedImprovement(xi=1e-4)
 
         self.optimizer.maximize(
-            init_points=10, n_iter=10,
+            init_points=10,
+            n_iter=10,
         )
 
     def photo(self):
