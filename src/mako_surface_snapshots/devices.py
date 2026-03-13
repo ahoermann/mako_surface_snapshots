@@ -18,6 +18,7 @@ from ophyd import (
 import bluesky.plan_stubs as bps
 
 
+
 class SampleStageGI(Device):
     """
     This device connects to the sample stage. Names are constructed by concatenation
