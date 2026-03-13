@@ -2,6 +2,7 @@ from ophyd import Component as Cpt
 from ophyd.areadetector import ADComponent, DetectorBase
 from ophyd.areadetector.cam import CamBase
 from ophyd.areadetector.plugins import ImagePlugin, StatsPlugin
+from ophyd.areadetector.trigger_mixins import SingleTrigger
 
 # https://blueskyproject.io/ophyd/user/tutorials/device.html
 from ophyd import (
