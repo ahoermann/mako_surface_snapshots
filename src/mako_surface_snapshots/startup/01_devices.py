@@ -15,9 +15,37 @@ READ_HDF5_FILE_PATH = "/tmp/docker_ioc/iocadsky/tmp/simdet/%Y/%m/%d/"
 
 vimba = Vimba("13VMB1:", name="vimba")
 
+# can't get warmup to work: TriggerMode 'Internal' not in allowed values
 vimba.read_attrs.append("hdf1")
 enabled = vimba.hdf1.enable.get()
-vimba.hdf1.warmup()
+# vimba.hdf1.warmup()
+
+def warmup_hdf5(hdf5plugin):
+    sigs = OrderedDict(
+            [
+                (hdf5plugin.parent.cam.array_callbacks, 1),
+                (hdf5plugin.parent.cam.image_mode, "Single"),
+                (hdf5plugin.parent.cam.trigger_mode, "On"),
+                # just in case tha acquisition time is set very long...
+                (hdf5plugin.parent.cam.acquire_time, 1),
+                (hdf5plugin.parent.cam.acquire_period, 1),
+                (hdf5plugin.parent.cam.acquire, 1),
+            ]
+        )
+
+        original_vals = {sig: sig.get() for sig in sigs}
+
+        for sig, val in sigs.items():
+            ttime.sleep(0.1)  # abundance of caution
+            sig.set(val).wait()
+
+        ttime.sleep(2)  # wait for acquisition
+
+        for sig, val in reversed(list(original_vals.items())):
+            ttime.sleep(0.1)
+            sig.set(val).wait()
+
+warmup_hdf5(vimba.hdf1)
 vimba.hdf1.enable.put(enabled)
 
 
