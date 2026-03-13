@@ -58,9 +58,9 @@ class Vimba(SingleTrigger, DetectorBase):
     hdf1 = ADComponent(
         MyHDF5Plugin,
         suffix="HDF1:",
-        root=".",
-        write_path_template="./%Y/%m/%d/",
-        read_path_template="./%Y/%m/%d/",
+        root=Path(".").absolute().as_posix(),
+        write_path_template=f"{Path(".").absolute().as_posix()}/%Y/%m/%d/",
+        read_path_template=f"{Path(".").absolute().as_posix()}/%Y/%m/%d/",
     )
 
 
