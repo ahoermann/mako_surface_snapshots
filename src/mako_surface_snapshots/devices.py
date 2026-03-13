@@ -83,7 +83,7 @@ def ad_configure_exposure(
     if not out_path.exists():
         # create
         out_path.mkdir(parents=True, exist_ok=True)
-    out_path = out_path.as_posix()  # convert to string for EPICS
+    out_path = out_path.absolute().as_posix()  # convert to string for EPICS
 
     yield from bps.mv(det.cam.num_images, int(n_frames))
     yield from bps.mv(det.cam.acquire_time, frame_time)
@@ -91,6 +91,7 @@ def ad_configure_exposure(
     yield from bps.mv(det.hdf1.num_capture, 1)
     yield from bps.mv(det.hdf1.write_path_template, output_path / "%Y/%m/%d/")
 
+    det.read_attrs.append("hdf1")
     enabled = det.hdf1.enable.get()
     det.hdf1.warmup()
     det.hdf1.enable.put(enabled)
