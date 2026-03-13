@@ -92,9 +92,4 @@ def ad_configure_exposure(
     # not sure what the correct way to configure paths is here
     # yield from bps.mv(det.hdf1.write_path_template, output_path / "%Y/%m/%d/")
 
-    det.read_attrs.append("hdf1")
-    enabled = det.hdf1.enable.get()
-    det.hdf1.warmup()
-    det.hdf1.enable.put(enabled)
-
     det.output_path = Path(output_path)
