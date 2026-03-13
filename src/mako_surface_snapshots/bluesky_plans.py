@@ -10,3 +10,8 @@ def vimba_capture(vimba, exposure_time: float = 1) -> Iterator:
         yield from bps.trigger_and_read([vimba], name="mouse_vimba_measure")
     finally:
         yield from bps.unstage(vimba)
+
+def vimba_read(vimba, exposure_time: float = 1) -> Iterator:
+    yield from bps.open_run()
+    yield from vimba_capture(vimba, exposure_time = 1)
+    yield from bps.close_run()
