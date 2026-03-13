@@ -4,6 +4,9 @@ from ophyd import Component as Cpt
 from ophyd.areadetector import ADComponent, DetectorBase
 from ophyd.areadetector.cam import CamBase
 from ophyd.areadetector.plugins import ImagePlugin, StatsPlugin
+from ophyd.areadetector import HDF5Plugin
+from ophyd.areadetector import EpicsSignalWithRBV
+from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
 from ophyd.areadetector.trigger_mixins import SingleTrigger
 
 # https://blueskyproject.io/ophyd/user/tutorials/device.html
@@ -13,6 +16,7 @@ from ophyd import (
 )
 
 import bluesky.plan_stubs as bps
+
 
 class SampleStageGI(Device):
     """
@@ -29,11 +33,35 @@ class SampleStageGI(Device):
     yaw = Cpt(EpicsMotor, "yaw")
 
 
+# from https://bcda-aps.github.io/bluesky_training/tutor/_lesson6.html
+class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite):
+    create_directory_depth = Component(EpicsSignalWithRBV, suffix="CreateDirectory")
+    array_callbacks = Component(EpicsSignalWithRBV, suffix="ArrayCallbacks")
+
+    pool_max_buffers = None
+
+    def get_frames_per_point(self):
+        return self.num_capture.get()
+
+    def stage(self):
+        super().stage()
+        res_kwargs = {"frame_per_point": self.get_frames_per_point()}
+        # res_kwargs = {'frame_per_point': self.num_capture.get()}
+        self._generate_resource(res_kwargs)
+
+
 class Vimba(SingleTrigger, DetectorBase):
     cam = ADComponent(CamBase, "cam1:")
     image = ADComponent(ImagePlugin, "image1:")
     stats1 = ADComponent(StatsPlugin, "Stats1:")
     output_path = Path("/tmp/images/")
+    hdf1 = ADComponent(
+        MyHDF5Plugin,
+        suffix="HDF1:",
+        root=DATABROKER_ROOT_PATH,
+        write_path_template=WRITE_HDF5_FILE_PATH,
+        read_path_template=READ_HDF5_FILE_PATH,
+    )
 
 
 def ad_configure_exposure(
@@ -60,4 +88,11 @@ def ad_configure_exposure(
     yield from bps.mv(det.cam.num_images, int(n_frames))
     yield from bps.mv(det.cam.acquire_time, frame_time)
     yield from bps.mv(det.cam.acquire_period, frame_time)
+    yield from bps.mv(det.hdf1.num_capture, 1)
+    yield from bps.mv(det.hdf1.write_path_template, output_path / "%Y/%m/%d/")
+
+    enabled = det.hdf1.enable.get()
+    det.hdf1.warmup()
+    det.hdf1.enable.put(enabled)
+
     det.output_path = Path(output_path)
