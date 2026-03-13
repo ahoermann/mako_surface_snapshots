@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import time
 
 from mako_surface_snapshots.devices import Vimba
 
@@ -39,13 +40,13 @@ def warmup_hdf5(hdf5plugin):
     original_vals = {sig: sig.get() for sig in sigs}
 
     for sig, val in sigs.items():
-        ttime.sleep(0.1)  # abundance of caution
+        time.sleep(0.1)  # abundance of caution
         sig.set(val).wait()
 
-    ttime.sleep(2)  # wait for acquisition
+    time.sleep(2)  # wait for acquisition
 
     for sig, val in reversed(list(original_vals.items())):
-        ttime.sleep(0.1)
+        time.sleep(0.1)
         sig.set(val).wait()
 
 
