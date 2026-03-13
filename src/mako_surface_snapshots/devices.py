@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from ophyd import Component as Cpt
 from ophyd.areadetector import ADComponent, DetectorBase
 from ophyd.areadetector.cam import CamBase
