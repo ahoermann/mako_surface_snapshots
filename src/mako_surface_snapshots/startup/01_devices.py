@@ -20,6 +20,9 @@ vimba = Vimba("13VMB1:", name="vimba")
 
 # can't get warmup to work: TriggerMode 'Internal' not in allowed values
 vimba.read_attrs.append("hdf1")
+if adsimdet.hdf1.create_directory_depth.get() == 0:
+    # probably not set, so let's set it now to some default
+    adsimdet.hdf1.create_directory_depth.put(-5)
 enabled = vimba.hdf1.enable.get()
 # vimba.hdf1.warmup()
 
