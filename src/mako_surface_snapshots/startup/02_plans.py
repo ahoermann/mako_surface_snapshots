@@ -1,1 +1,3 @@
-from mako_surface_snapshots.bluesky_plans import vimba_capture
+import bluesky.plan_stubs as bps
+
+from mako_surface_snapshots.bluesky_plans import vimba_read

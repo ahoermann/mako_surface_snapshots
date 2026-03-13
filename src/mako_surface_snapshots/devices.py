@@ -12,6 +12,7 @@ from ophyd import (
     EpicsMotor,
 )
 
+import bluesky.plan_stubs as bps
 
 class SampleStageGI(Device):
     """
