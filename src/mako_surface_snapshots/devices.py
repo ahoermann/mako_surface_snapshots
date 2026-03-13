@@ -35,8 +35,8 @@ class SampleStageGI(Device):
 
 # from https://bcda-aps.github.io/bluesky_training/tutor/_lesson6.html
 class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite):
-    create_directory_depth = Component(EpicsSignalWithRBV, suffix="CreateDirectory")
-    array_callbacks = Component(EpicsSignalWithRBV, suffix="ArrayCallbacks")
+    create_directory_depth = Cpt(EpicsSignalWithRBV, suffix="CreateDirectory")
+    array_callbacks = Cpt(EpicsSignalWithRBV, suffix="ArrayCallbacks")
 
     pool_max_buffers = None
 
