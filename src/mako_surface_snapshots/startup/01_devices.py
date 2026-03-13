@@ -32,7 +32,7 @@ def warmup_hdf5(hdf5plugin):
         [
             (hdf5plugin.parent.cam.array_callbacks, 1),
             (hdf5plugin.parent.cam.image_mode, "Single"),
-            (hdf5plugin.parent.cam.trigger_mode, "On"),
+            (hdf5plugin.parent.cam.trigger_mode, "Off"),
             # just in case tha acquisition time is set very long...
             (hdf5plugin.parent.cam.acquire_time, 1),
             (hdf5plugin.parent.cam.acquire_period, 1),
