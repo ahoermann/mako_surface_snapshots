@@ -13,7 +13,6 @@ WRITE_HDF5_FILE_PATH = "/tmp/simdet/%Y/%m/%d/"
 READ_HDF5_FILE_PATH = "/tmp/docker_ioc/iocadsky/tmp/simdet/%Y/%m/%d/"
 
 
-
 vimba = Vimba("13VMB1:", name="vimba")
 
 # do not connect to the sample stage during tests

@@ -18,7 +18,6 @@ from ophyd import (
 import bluesky.plan_stubs as bps
 
 
-
 class SampleStageGI(Device):
     """
     This device connects to the sample stage. Names are constructed by concatenation
@@ -59,9 +58,9 @@ class Vimba(SingleTrigger, DetectorBase):
     hdf1 = ADComponent(
         MyHDF5Plugin,
         suffix="HDF1:",
-        root=DATABROKER_ROOT_PATH,
-        write_path_template=WRITE_HDF5_FILE_PATH,
-        read_path_template=READ_HDF5_FILE_PATH,
+        root=".",
+        write_path_template="./%Y/%m/%d/",
+        read_path_template="./%Y/%m/%d/",
     )
 
 
