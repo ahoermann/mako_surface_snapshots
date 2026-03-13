@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from mako_surface_snapshots.devices import Vimba
 
 DATABROKER_ROOT_PATH = "/tmp/"
