@@ -45,12 +45,12 @@ def vimba_optimise_gain(vimba, exposure_time: float = 0.5) -> Iterator:
 
     def black_box_function(vimba=vimba, exposure_time=exposure_time, **kwargs):
         for key, value in kwargs.items():
-            _ = yield from bps.mv(vimba.cam.Gain, value)
-        _ = yield from bps.open_run()
-        _ = yield from vimba_capture(
+            _ = bps.mv(vimba.cam.Gain, value)
+        _ = bps.open_run()
+        _ = vimba_capture(
             vimba, exposure_time=exposure_time, output_path=Path(".")
         )
-        _ = yield from bps.close_run()
+        _ = bps.close_run()
         array_size = vimba.image.array_size.get()
         shape = (array_size.height, array_size.width)
         img = vimba.image.array_data.get().reshape(shape)
