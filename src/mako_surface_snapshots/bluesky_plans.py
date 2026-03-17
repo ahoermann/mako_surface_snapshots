@@ -45,11 +45,9 @@ def vimba_optimise_gain(vimba, exposure_time: float = 0.5) -> Iterator:
 
     def black_box_function(vimba=vimba, exposure_time=exposure_time, **kwargs):
         for key, value in kwargs.items():
-            _ = bps.mv(vimba.cam.Gain, value)
+            _ = bps.mv(vimba.cam.gain, value)
         _ = bps.open_run()
-        _ = vimba_capture(
-            vimba, exposure_time=exposure_time, output_path=Path(".")
-        )
+        _ = vimba_capture(vimba, exposure_time=exposure_time, output_path=Path("."))
         _ = bps.close_run()
         array_size = vimba.image.array_size.get()
         shape = (array_size.height, array_size.width)
@@ -61,7 +59,7 @@ def vimba_optimise_gain(vimba, exposure_time: float = 0.5) -> Iterator:
         acquisition_function = ExpectedImprovement(xi=1e-4)
         optimizer = BayesianOptimization(
             f=black_box_function,
-            pbounds={"Gain": (0, 40)},
+            pbounds={"gain": (0, 40)},
             random_state=1,
             bounds_transformer=SequentialDomainReductionTransformer(),
             acquisition_function=acquisition_function,
